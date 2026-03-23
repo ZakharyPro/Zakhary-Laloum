@@ -322,14 +322,54 @@
       pointer-events: none;
     }
 
-    .hero__inner { position: relative; z-index: 1; }
+    .hero__inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .hero__inner { grid-template-columns: 1fr; }
+      .hero__photo { display: none; }
+    }
+
+    /* Photo frame */
+    .hero__photo-frame {
+      position: relative;
+      border: 1px solid var(--border-gold);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .hero__photo-frame::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 44px; height: 44px;
+      border-right: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .hero__photo-img {
+      width: 100%;
+      height: clamp(380px, 50vw, 540px);
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: grayscale(12%);
+      transition: filter .4s;
+    }
+    .hero__photo-frame:hover .hero__photo-img { filter: grayscale(0%); }
 
     /* Initial JS states (overridden by GSAP) */
     .js .hero__eyebrow,
     .js .hero__headline,
     .js .hero__subline,
     .js .hero__actions,
-    .js .hero__scroll { opacity: 0; }
+    .js .hero__scroll,
+    .js .hero__photo-frame { opacity: 0; }
 
     .hero__eyebrow {
       display: flex;
@@ -643,7 +683,7 @@
 
     .services__grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(320px,100%), 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(380px,100%), 1fr));
       gap: 1.5rem;
       margin-top: clamp(3rem,5vw,5rem);
     }
@@ -871,7 +911,8 @@
     ═══════════════════════════════════════ */
     @media (prefers-reduced-motion: reduce) {
       .hero__eyebrow, .hero__headline, .hero__subline,
-      .hero__actions, .hero__scroll { opacity: 1 !important; transform: none !important; }
+      .hero__actions, .hero__scroll,
+      .hero__photo-frame { opacity: 1 !important; transform: none !important; }
       .testimonial { clip-path: none !important; }
       .service-card { opacity: 1 !important; transform: none !important; }
       .hero__dot, .hero__scroll-line, .marquee { animation: none !important; }
@@ -916,34 +957,50 @@
     <div class="hero__accent-line" aria-hidden="true"></div>
 
     <div class="hero__inner container">
-      <div class="hero__eyebrow" aria-label="Disponibilité">
-        <span class="hero__dot" aria-hidden="true"></span>
-        Disponible pour nouveaux projets
+
+      <!-- Left: text content -->
+      <div class="hero__content">
+        <div class="hero__eyebrow" aria-label="Disponibilité">
+          <span class="hero__dot" aria-hidden="true"></span>
+          Disponible pour nouveaux projets
+        </div>
+
+        <h1 class="hero__headline">
+          Je construis des<br>
+          <em>expériences</em><br>
+          qui convertissent.
+        </h1>
+
+        <p class="hero__subline">
+          Automatisation IA &amp; création de sites web premium. Je travaille avec des
+          fondateurs ambitieux pour transformer leurs idées en solutions précises,
+          rapides et mémorables.
+        </p>
+
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">
+            Démarrer un projet
+            <svg class="btn__arrow" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+              <path d="M2.5 7.5H12.5M12.5 7.5L8.5 3.5M12.5 7.5L8.5 11.5"
+                    stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#travaux" class="btn btn--ghost">Voir mes travaux</a>
+        </div>
       </div>
 
-      <h1 class="hero__headline">
-        Je construis des<br>
-        <em>expériences</em><br>
-        qui convertissent.
-      </h1>
-
-      <p class="hero__subline">
-        Développeur full-stack &amp; stratège produit. Je travaille avec des
-        fondateurs ambitieux pour transformer leurs idées en produits précis,
-        rapides et mémorables.
-      </p>
-
-      <div class="hero__actions">
-        <a href="#contact" class="btn btn--primary">
-          Démarrer un projet
-          <svg class="btn__arrow" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
-            <path d="M2.5 7.5H12.5M12.5 7.5L8.5 3.5M12.5 7.5L8.5 11.5"
-                  stroke="currentColor" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a href="#travaux" class="btn btn--ghost">Voir mes travaux</a>
+      <!-- Right: profile photo -->
+      <div class="hero__photo">
+        <div class="hero__photo-frame">
+          <img src="assets/images/zakhary.png"
+               alt="Zakhary — Automatisation IA &amp; Création de Sites Web"
+               class="hero__photo-img"
+               width="460" height="540"
+               loading="eager">
+        </div>
       </div>
+
     </div>
 
     <div class="hero__scroll" aria-hidden="true">
@@ -1012,7 +1069,7 @@
         <article class="testimonial">
           <div class="testimonial__q" aria-hidden="true">"</div>
           <blockquote class="testimonial__text">
-            "Zak a livré en 3 semaines ce qu'une agence nous aurait facturé 6 mois.
+            "Zakhary a livré en 3 semaines ce qu'une agence nous aurait facturé 6 mois.
             Le résultat dépasse largement nos attentes initiales. Une vraie différence."
           </blockquote>
           <footer class="testimonial__author">
@@ -1028,7 +1085,7 @@
           <div class="testimonial__q" aria-hidden="true">"</div>
           <blockquote class="testimonial__text">
             "Notre taux de conversion a augmenté de 40% après le lancement.
-            Zak comprend à la fois le design, le code et la stratégie — c'est rare."
+            Zakhary comprend à la fois le design, le code et la stratégie — c'est rare."
           </blockquote>
           <footer class="testimonial__author">
             <div class="testimonial__avatar" aria-hidden="true">T</div>
@@ -1065,32 +1122,32 @@
   <div class="marquee-section" aria-hidden="true" role="presentation">
     <div class="marquee">
       <div class="marquee__track">
-        <span class="marquee__item">Développement Web</span>
+        <span class="marquee__item">Automatisation IA</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Architecture Produit</span>
+        <span class="marquee__item">Sites Web Premium</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Design System</span>
+        <span class="marquee__item">Workflows Intelligents</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Stratégie Digitale</span>
+        <span class="marquee__item">Création d'Applications</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Performance &amp; SEO</span>
+        <span class="marquee__item">Intelligence Artificielle</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Applications SaaS</span>
+        <span class="marquee__item">Design Premium</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
       </div>
       <!-- Duplicate for seamless loop -->
       <div class="marquee__track" aria-hidden="true">
-        <span class="marquee__item">Développement Web</span>
+        <span class="marquee__item">Automatisation IA</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Architecture Produit</span>
+        <span class="marquee__item">Sites Web Premium</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Design System</span>
+        <span class="marquee__item">Workflows Intelligents</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Stratégie Digitale</span>
+        <span class="marquee__item">Création d'Applications</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Performance &amp; SEO</span>
+        <span class="marquee__item">Intelligence Artificielle</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
-        <span class="marquee__item">Applications SaaS</span>
+        <span class="marquee__item">Design Premium</span>
         <span class="marquee__item"><span class="marquee__sep">·</span></span>
       </div>
     </div>
@@ -1113,16 +1170,16 @@
 
         <article class="service-card">
           <div class="service-card__num" aria-hidden="true">01</div>
-          <h3 class="service-card__title">Développement Web &amp; Application</h3>
+          <h3 class="service-card__title">Automatisation par l'IA</h3>
           <p class="service-card__desc">
-            Sites vitrine haute performance, applications SaaS, dashboards métier.
-            Code propre, livraison rapide, zéro dette technique.
+            Workflows intelligents, agents IA sur mesure, intégrations no-code et low-code.
+            Automatisez les tâches répétitives et gagnez des heures chaque semaine.
           </p>
           <ul class="service-card__tags" aria-label="Technologies">
-            <li>React / Next.js</li>
-            <li>Node.js</li>
-            <li>PostgreSQL</li>
-            <li>TypeScript</li>
+            <li>ChatGPT / Claude</li>
+            <li>Make / n8n</li>
+            <li>APIs &amp; Webhooks</li>
+            <li>Zapier</li>
           </ul>
           <a href="#contact" class="service-card__cta">
             Démarrer
@@ -1136,39 +1193,16 @@
 
         <article class="service-card">
           <div class="service-card__num" aria-hidden="true">02</div>
-          <h3 class="service-card__title">Stratégie Produit &amp; Architecture</h3>
+          <h3 class="service-card__title">Création de Sites Web</h3>
           <p class="service-card__desc">
-            Audit technique, roadmap produit, choix de stack. Construire juste
-            du premier coup — pas recommencer dans six mois.
+            Sites vitrine haute performance, landing pages qui convertissent,
+            applications web sur mesure. Code propre, livraison rapide, résultat mémorable.
           </p>
-          <ul class="service-card__tags" aria-label="Livrables">
-            <li>Audit</li>
-            <li>Architecture</li>
-            <li>Roadmap</li>
-            <li>Documentation</li>
-          </ul>
-          <a href="#contact" class="service-card__cta">
-            Démarrer
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-              <path d="M1.5 6.5H11.5M11.5 6.5L7.5 2.5M11.5 6.5L7.5 10.5"
-                    stroke="currentColor" stroke-width="1.4"
-                    stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </article>
-
-        <article class="service-card">
-          <div class="service-card__num" aria-hidden="true">03</div>
-          <h3 class="service-card__title">Design System &amp; Interfaces</h3>
-          <p class="service-card__desc">
-            UI premium sur mesure. Des interfaces que vos utilisateurs mémorisent
-            — et reviennent utiliser encore et encore.
-          </p>
-          <ul class="service-card__tags" aria-label="Outils">
-            <li>Figma</li>
-            <li>CSS Avancé</li>
-            <li>Animation</li>
-            <li>Accessibilité</li>
+          <ul class="service-card__tags" aria-label="Technologies">
+            <li>React / Next.js</li>
+            <li>Tailwind CSS</li>
+            <li>WordPress</li>
+            <li>Performance &amp; SEO</li>
           </ul>
           <a href="#contact" class="service-card__cta">
             Démarrer
@@ -1200,8 +1234,8 @@
           </h2>
           <p class="contact__desc">Parlez-moi de votre projet. Je réponds sous 24h.</p>
           <div class="contact__links">
-            <a href="mailto:hello@zak.dev" class="contact__link">
-              hello@zak.dev <span aria-hidden="true">→</span>
+            <a href="mailto:zakharypro98@gmail.com" class="contact__link">
+              zakharypro98@gmail.com <span aria-hidden="true">→</span>
             </a>
             <a href="#" class="contact__link" target="_blank" rel="noopener">
               Réserver un appel <span aria-hidden="true">→</span>
@@ -1345,15 +1379,17 @@
 
     // Set y offsets (CSS already has opacity: 0 via .js class)
     gsap.set(['.hero__eyebrow','.hero__headline','.hero__subline','.hero__actions'], { y: 38 });
+    gsap.set('.hero__photo-frame', { y: 44, scale: .97 });
 
     const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
     tl
-      .from('.nav',            { y: -28, opacity: 0, duration: .9 }, .15)
-      .to('.hero__eyebrow',    { y: 0, opacity: 1, duration: .85 }, '-=.55')
-      .to('.hero__headline',   { y: 0, opacity: 1, duration: 1.05 }, '-=.7')
-      .to('.hero__subline',    { y: 0, opacity: 1, duration: .9  }, '-=.75')
-      .to('.hero__actions',    { y: 0, opacity: 1, duration: .85 }, '-=.65')
-      .to('.hero__scroll',     { opacity: 1, duration: .6 }, '-=.35');
+      .from('.nav',              { y: -28, opacity: 0, duration: .9 }, .15)
+      .to('.hero__eyebrow',      { y: 0, opacity: 1, duration: .85 }, '-=.55')
+      .to('.hero__headline',     { y: 0, opacity: 1, duration: 1.05 }, '-=.7')
+      .to('.hero__subline',      { y: 0, opacity: 1, duration: .9  }, '-=.75')
+      .to('.hero__actions',      { y: 0, opacity: 1, duration: .85 }, '-=.65')
+      .to('.hero__photo-frame',  { y: 0, scale: 1, opacity: 1, duration: 1.1 }, '-=.9')
+      .to('.hero__scroll',       { opacity: 1, duration: .6 }, '-=.35');
   })();
 
 
